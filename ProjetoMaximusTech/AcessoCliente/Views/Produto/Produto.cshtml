@@ -1,0 +1,257 @@
+﻿
+@{
+    ViewData["Title"] = "Cadastro de Usuário";
+    Layout = "~/Views/Shared/_MenuSuperior.cshtml";
+ }
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+
+    <title>Cadastro de Produto</title>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link href="~/css/Produto/produto.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="card">
+
+        @*Título*@
+        <div class="card-header section_header title_align">
+            <span class="content_title">Lista de Produtos</span>
+        </div>
+        @*Conteúdo*@
+        <div class="card-body content_body">
+            @*Controle de filtros*@
+            <div class="row-fluid content_line">
+                <button type="button" class="btn bg-navy-blue" id="btn_filtros">Filtros</button>
+                <button type="button" class="btn btn-info" id="btn_limparFiltros" onclick="LimparCampos('filtros');">Limpar Filtros</button>
+            </div>
+
+            @*Seção de filtros*@
+            <div class="row-fluid content_line">
+                <div class="card filters_section invisible" id="filters_section">
+                    <div class="card-header section_header">Filtros</div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-row">
+
+                           
+                                <div class="form-group col">
+                                    <label for="txt_filtroCodigoProduto">Código Produto</label>
+                                    <input type="text" class="form-control" id="txt_filtroCodigoProduto" placeholder="">
+                                </div>
+
+                            
+                                <div class="form-group col">
+                                    <label for="txt_filtroDescricao">Descricao</label>
+                                    <input type="text" class="form-control" id="txt_filtroDescricao" placeholder="">
+                                </div>
+
+                             
+                                <div class="form-group col-md-2">
+                                    <label for="select_filtroDepartamento">Departamento</label>
+                                    <select id="select_filtroDepartamento" class="form-control">
+                                        <option value="0" selected>Selecione...</option>
+                                        <option>...</option>
+                                    </select>
+                                </div>                         
+
+                                <div class="form-group col-md-2">
+                                    <label for="select_filtroAtivo">Ativo</label>
+                                    <select id="select_filtroAtivo" class="form-control">
+                                        <option value="0" selected="">Selecione...</option>
+                                        <option value="S">Sim</option>
+                                        <option value="N">Nao</option>
+                                        <option value="T">Ambos</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <button type="button" class="btn btn-success button_filter" onclick="FiltrarLista()" id="btn_filtrar"><i class="fa fa-search"></i> Filtrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            @*Seção Listagem*@
+            <div class="row-fluid content_line">
+                <div class="card section_container">
+
+                    @*Corpo*@
+                    <div id="lista_usuarios" class="card-body principal-card-container padding_none">
+                        <div class="list_header header_usuario">
+                            <ul>
+                                <li class="col-1">Id Produto</li>
+                                <li class="col-1">Código Produto</li>
+                                <li class="col-3">Descrição</li>
+                                <li class="col-2">Departamento</li>
+                                <li class="col-1">Usuario Cadastro</li>
+                                <li class="col-3">Ações</li>
+                            </ul>
+                        </div>
+
+                        @*Corpo da lista*@
+                        <div class="list_body" id="lista_Item">
+
+                            @*Itens*@
+                        </div>
+                    </div>
+
+                    @*Rodapé*@
+                    <div class="card-footer">
+                        <nav class="navbar_bottom" aria-label="...">
+                            <div class="legenda">
+                                <div class="alinhamento-legenda">
+                                    <div class="item_legenda">
+                                        <div class="blue_row"></div> <span>Ativo</span>
+                                    </div>
+                                    <div class="item_legenda">
+                                        <div class="red_row"></div> <span>Inativo</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Botões de ação*@
+                            <div class="footer_buttons">
+                                <button type="button" class="btn btn-primary" id="btn_novoUsuario" onclick="AbrirModal(true);"><i class="fa fa-plus"></i> Novo</button>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+       
+    <div class="modal fade" id="cadastroProduto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-navy-blue modal_header_title">
+                    <h4 class="modal-title" id="myModalLabel">Cadastro de Produtos</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="text" class="form-control invisivel" id="txt_IdProduto" placeholder="">
+                        <div class="form-group">
+                            <label for="txt_CodigoProduto">Codigo Produto</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-barcode"></i></div>
+                                </div>
+                                <input type="text" class="form-control" id="txt_CodigoProduto" placeholder="365">
+                                <div id="invalidaCodigo" class="invalido invisivel">
+                                    Por favor, informe o Codigo do produto.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_modalDescricao">Descrição</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-list"></i></div>
+                                </div>
+                                <input type="text" class="form-control" id="txt_modalDescricao">
+                                <div id="invalidaDescricao" class="invalido invisivel">
+                                    Por favor, informe a descricao do produto.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txt_modalPreco">Preço</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-money"></i></div>
+                                </div>
+                                <input type="number" step="0.01" class="form-control" id="txt_modalPreco" placeholder="1.00">
+                                <div id="invalidaPreco" class="invalido invisivel">
+                                    Por favor, informe o Preço do produto.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="select_modalDepartamento">Departamento</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-bank"></i></div>
+                                </div>
+                                <select class="form-control" id="select_modalDepartamento">
+                                    <option value="0">Selecione...</option>
+                                </select>
+                                <div id="invalidaDepartamento" class="invalido invisivel">
+                                    Por favor, Selecione o Departamento.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="select_modalStatus">Status</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-check"></i></div>
+                                </div>
+                                <select class="form-control" id="select_modalStatus">
+                                    <option value="0">Selecione...</option>
+                                    <option value="true">Ativo</option>
+                                    <option value="false">Inativo</option>
+                                </select>
+                                <div id="invalidaStatus" class="invalido invisivel">
+                                    Por favor, preencha o Status.
+                                </div>
+                            </div>
+                        </div>
+                        <div id="recaptchaCadastro" class="form-group">
+
+                        </div>
+                        <div id="invalidaCadastroCaptcha" class="invalido invisivel">
+                            Obrigatorio realizar a validação Captcha.
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="form-control btn btn-primary" onclick="GravarProduto();">Registrar Produto</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*MODAL AVISO Editar*@
+    <div class="modal fade" id="modal_AvisoEditar" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                @*Cabeçalho*@
+                <div class="modal-header bg-primary ">
+                    <h5 class="modal-title " style="color:#FFF" id="modal_AvisoEditarTitulo">Atenção</h5>
+                </div>
+
+                @*Corpo*@
+                <div class="modal-body">
+                    <p class="modal-title " id="modal_avisoEditarTitulo">Deseja gravar/editar este usuario?</p>
+                </div>
+
+                @*Rodapé*@
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="btn_modalAvisoEditarSim" onclick="validarCadastro();">  <i class="fa fa-close"></i> Sim</button>
+                    <button type="button" class="btn btn-danger" id="btn_modalAvisoEditarNao" onclick="$('#modal_AvisoEditar').modal('hide');$('#modal_CadastroUsuario').modal('hide');">  <i class="fa fa-close"></i> Nao</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script src="~/js/jquery.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+
+<script src="~/js/Produto/produto.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        CarregaDepartamentos();
+        CarregaProdutos();
+    });
+
+</script>
+
