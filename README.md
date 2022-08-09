@@ -1,4 +1,4 @@
-# projetomaxima2
+# projetoCRUD
 
 - Para executar, iniciar no visual studio community ou professional e verificar se os pacotes NuGets estão instalados.
 - Cliente e Api estão em projetos separados, necessário iniciar cada um deles.
