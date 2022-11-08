@@ -8,7 +8,7 @@ namespace ApiProjeto.Controllers
     public class ProdutoController : ApiController
     {
         [HttpPost]
-        [Route("api/Produto/Produto/Adicionar")]
+        [Route("api/Produto/Adicionar")]
         public string Adicionar(ProdutoModel produto)
         {
             string retorno = "";
@@ -23,8 +23,8 @@ namespace ApiProjeto.Controllers
             return retorno;
         }
 
-        [HttpPost]
-        [Route("api/Produto/Produto/Alterar")]
+        [HttpPatch]
+        [Route("api/Produto/Alterar")]
         public string Alterar(ProdutoModel produto)
         {
             string retorno = "";
@@ -39,8 +39,8 @@ namespace ApiProjeto.Controllers
             return retorno;
         }
 
-        [HttpPost]
-        [Route("api/Produto/Produto/Remover")]
+        [HttpDelete]
+        [Route("api/Produto/Remover")]
         public string Remover(ProdutoModel produto)
         {
             string retorno = "";
